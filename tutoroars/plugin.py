@@ -34,7 +34,7 @@ hooks.Filters.CONFIG_DEFAULTS.add_items(
 
         # Make sure LMS / CMS have evnet-routing-backends installed
         # TODO: Do a new release and pin this! Also add config!
-        ("OPENEDX_EXTRA_PIP_REQUIREMENTS", "event-routing-backends"),
+        ("OPENEDX_EXTRA_PIP_REQUIREMENTS", ["edx-event-routing-backends"]),
 
         # Demo data (optional)
         # set to "xapi" to load xapi demo data into clickhouse
@@ -95,6 +95,7 @@ MY_INIT_TASKS: list[tuple[str, tuple[str, ...], int]] = [
     ("oars", ("oars", "jobs", "init", "superset-api-dashboard.sh"), 98),
     ("superset", ("oars", "jobs", "init", "superset-init-security.sh"), 99),
     ("oars", ("oars", "jobs", "init", "clickhouse-demo-xapi-data.sh"), 100),
+    ("lms", ("oars", "jobs", "init", "configure-oars-lms.sh"), 101),
 ]
 
 
@@ -196,6 +197,7 @@ OARS_DOCKER_COMPOSE_PYTHON_JOB = """
   depends_on:
     - superset
     - clickhouse
+    - ralph
 """
 
 hooks.Filters.ENV_PATCHES.add_item(
